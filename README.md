@@ -109,7 +109,7 @@ HIP允许并行程序开发者无缝移植CUDA C++代码。HIP源代码（包括
 --------
 
 本讲座中所有测试均基于AMD Radeon MI25或者硬件。如果改为其他硬件，需要修改计算核心的频率，Mi25对应的核心频率为1.536 Ghz。
-
+need set card freques: /opt/rocm/bin/rocm-smi  --setperf high
 2       基于Vega10的硬件相关优化实例
 =========================
 

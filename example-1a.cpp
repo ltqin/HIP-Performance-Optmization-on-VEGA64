@@ -24,8 +24,7 @@ All the tests are based on AMD MI25 radeon instict and AMD ROCm.
 #define THREADS_PER_BLOCK_Z  1
 
 __global__ void 
-null_kernel(hipLaunchParm lp,
-	float* __restrict__ a)
+null_kernel(float* a)
 {
 
 }
@@ -63,7 +62,7 @@ int main() {
   HIP_ASSERT(hipMalloc((void**)&deviceA, NUM * sizeof(float)));
   
 
-  hipLaunchKernel(null_kernel,
+  hipLaunchKernelGGL(null_kernel,
                   dim3(1, 1),
                   dim3(THREADS_PER_BLOCK_X, THREADS_PER_BLOCK_Y, THREADS_PER_BLOCK_Z),
 	              0, 0,
@@ -71,7 +70,7 @@ int main() {
 
 
   hipEventRecord(start, NULL);
-  hipLaunchKernel(null_kernel,
+  hipLaunchKernelGGL(null_kernel,
 				  dim3(TOTAL_THREADS/THREADS_PER_BLOCK_X, 1),
 				  dim3(THREADS_PER_BLOCK_X, THREADS_PER_BLOCK_Y, THREADS_PER_BLOCK_Z),	
 	              0, 0,
@@ -83,7 +82,7 @@ int main() {
   hipEventElapsedTime(&eventMs, start, stop);
 
   printf("kernel_time (hipEventElapsedTime) =%6.3fms\n", eventMs);
-  printf("Threads_per_cycle for Vega10 - 1.536GHz = % 3d\n", int(TOTAL_THREADS / eventMs / 1.536 / 1e6));
+  printf("Threads_per_cycle for Vega10 - 1.725GHz = % 3d\n", int(TOTAL_THREADS / eventMs / 1.725 / 1e6));
 
   
   HIP_ASSERT(hipFree(deviceA));
